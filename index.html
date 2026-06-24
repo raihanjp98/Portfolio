@@ -8,70 +8,48 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <style>
-  /* ── Reset & tokens ── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --ocean: #1D9E75;
-    --ocean-mid: #0F6E56;
-    --ocean-dark: #085041;
-    --navy: #185FA5;
-    --amber: #BA7517;
-    --coral: #D85A30;
-    --bg: #ffffff;
-    --bg2: #F7F9F8;
-    --bg3: #EEF3F1;
-    --txt: #1a1f1e;
-    --txt2: #52635f;
-    --txt3: #8a9e99;
-    --border: rgba(30,60,50,0.1);
-    --border-mid: rgba(30,60,50,0.18);
-    --radius: 10px;
-    --radius-lg: 16px;
+    --ocean: #1D9E75; --ocean-mid: #0F6E56; --ocean-dark: #085041;
+    --navy: #185FA5; --amber: #BA7517; --coral: #D85A30;
+    --bg: #ffffff; --bg2: #F7F9F8; --bg3: #EEF3F1;
+    --txt: #1a1f1e; --txt2: #52635f; --txt3: #8a9e99;
+    --border: rgba(30,60,50,0.1); --border-mid: rgba(30,60,50,0.18);
+    --radius: 10px; --radius-lg: 16px;
     --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
     --font-display: 'Space Grotesk', sans-serif;
     --font-body: 'Inter', sans-serif;
     --transition: 0.18s ease;
   }
   [data-theme="dark"] {
-    --bg: #0f1512;
-    --bg2: #161d1a;
-    --bg3: #1e2925;
-    --txt: #e8f0ed;
-    --txt2: #94b0a8;
-    --txt3: #5a7a72;
-    --border: rgba(150,220,190,0.1);
-    --border-mid: rgba(150,220,190,0.18);
+    --bg: #0f1512; --bg2: #161d1a; --bg3: #1e2925;
+    --txt: #e8f0ed; --txt2: #94b0a8; --txt3: #5a7a72;
+    --border: rgba(150,220,190,0.1); --border-mid: rgba(150,220,190,0.18);
   }
   html { scroll-behavior: smooth; }
   body { font-family: var(--font-body); background: var(--bg); color: var(--txt); line-height: 1.6; font-size: 15px; transition: background var(--transition), color var(--transition); }
 
-  /* ── Nav ── */
-  nav {
-    position: sticky; top: 0; z-index: 200;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 32px; height: 56px;
-    background: var(--bg); border-bottom: 1px solid var(--border);
-    backdrop-filter: blur(12px);
-  }
-  .nav-logo { font-family: var(--font-display); font-size: 16px; font-weight: 600; color: var(--ocean-mid); letter-spacing: -0.3px; }
-  .nav-links { display: flex; gap: 2px; }
-  .nav-links a { font-size: 13px; padding: 6px 12px; border-radius: 6px; color: var(--txt2); text-decoration: none; transition: background var(--transition), color var(--transition); }
+  /* NAV */
+  nav { position: sticky; top: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 68px; background: var(--bg); border-bottom: 1px solid var(--border); backdrop-filter: blur(12px); }
+  .nav-logo { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ocean-mid); letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 4px; }
+  .nav-links a { font-size: 15px; padding: 8px 16px; border-radius: 8px; color: var(--txt2); text-decoration: none; font-weight: 500; transition: background var(--transition), color var(--transition); }
   .nav-links a:hover { background: var(--bg3); color: var(--txt); }
-  .nav-actions { display: flex; gap: 8px; align-items: center; }
-  .btn-dark { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border-mid); background: var(--bg2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 15px; transition: background var(--transition); }
+  .nav-actions { display: flex; gap: 10px; align-items: center; }
+  .btn-dark { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border-mid); background: var(--bg2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 17px; transition: background var(--transition); }
   .btn-dark:hover { background: var(--bg3); }
-  .btn-cv { font-size: 12px; padding: 6px 14px; border-radius: 6px; background: var(--ocean); color: #fff; border: none; cursor: pointer; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: background var(--transition); }
-  .btn-cv:hover { background: var(--ocean-mid); }
+  .btn-hire { font-size: 14px; padding: 9px 20px; border-radius: 8px; background: var(--ocean); color: #fff; border: none; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background var(--transition); }
+  .btn-hire:hover { background: var(--ocean-mid); }
 
-  /* ── Hero ── */
-  .hero {
-    min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
-    padding: 80px 32px 60px; text-align: center; background: var(--bg);
-    background-image: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(29,158,117,0.07) 0%, transparent 70%);
-  }
+  /* HERO */
+  .hero { min-height: 92vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 80px 32px 60px; text-align: center; background-image: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(29,158,117,0.07) 0%, transparent 70%); }
   .hero-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--ocean); margin-bottom: 20px; }
-  .hero-avatar { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, var(--ocean) 0%, var(--navy) 100%); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: 26px; font-weight: 600; color: #fff; margin: 0 auto 24px; border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--ocean); }
+  .hero-avatar { width: 100px; height: 100px; border-radius: 50%; margin: 0 auto 24px; border: 3px solid var(--bg); box-shadow: 0 0 0 2px var(--ocean); overflow: hidden; background: linear-gradient(135deg, var(--ocean), var(--navy)); display: flex; align-items: center; justify-content: center; }
+  .hero-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .hero-avatar .avatar-fallback { font-family: var(--font-display); font-size: 30px; font-weight: 600; color: #fff; }
   .hero h1 { font-family: var(--font-display); font-size: clamp(28px, 5vw, 48px); font-weight: 600; line-height: 1.15; letter-spacing: -1px; margin-bottom: 8px; }
   .hero h1 span { color: var(--ocean); }
   .hero-degree { font-size: 13px; color: var(--txt3); margin-bottom: 20px; }
@@ -86,19 +64,21 @@
   .hero-scroll { margin-top: 56px; font-size: 11px; color: var(--txt3); display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .scroll-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--ocean), transparent); }
 
-  /* ── Stats bar ── */
+  /* STATS */
   .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background: var(--bg2); }
   .stat-cell { padding: 20px 16px; text-align: center; border-right: 1px solid var(--border); }
   .stat-cell:last-child { border-right: none; }
   .stat-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; color: var(--ocean-mid); }
   .stat-lbl { font-size: 11px; color: var(--txt3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
 
-  /* ── Section ── */
+  /* SECTION */
   section { padding: 72px 32px; max-width: 1000px; margin: 0 auto; }
   .section-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--ocean); margin-bottom: 8px; }
   .section-title { font-family: var(--font-display); font-size: clamp(20px, 3vw, 28px); font-weight: 600; letter-spacing: -0.5px; margin-bottom: 40px; }
+  .full-width-section { max-width: 100%; padding: 72px 0; }
+  .full-width-section > .inner { max-width: 1000px; margin: 0 auto; padding: 0 32px; }
 
-  /* ── Projects ── */
+  /* PROJECTS */
   .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 24px; }
   .filter-btn { font-size: 12px; padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border-mid); background: transparent; color: var(--txt2); cursor: pointer; transition: all var(--transition); }
   .filter-btn:hover { border-color: var(--ocean); color: var(--ocean); }
@@ -107,95 +87,112 @@
   .proj-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; cursor: pointer; transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition); position: relative; overflow: hidden; }
   .proj-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: transparent; transition: background var(--transition); }
   .proj-card:hover { border-color: var(--ocean); transform: translateY(-2px); box-shadow: var(--shadow); }
-  .proj-card:hover::before { background: var(--ocean); }
   .proj-card[data-cat="metocean"]:hover::before { background: var(--ocean); }
   .proj-card[data-cat="gis"]:hover::before { background: var(--navy); }
   .proj-card[data-cat="survey"]:hover::before { background: var(--amber); }
-  .proj-card[data-cat="drone"]:hover::before { background: var(--coral); }
+  .proj-card[data-cat="satellite"]:hover::before { background: var(--coral); }
   .proj-badge { font-size: 10px; font-weight: 600; padding: 3px 10px; border-radius: 20px; display: inline-block; margin-bottom: 12px; letter-spacing: 0.3px; }
   .badge-metocean { background: #E1F5EE; color: #0F6E56; }
   .badge-gis { background: #E6F1FB; color: #185FA5; }
   .badge-survey { background: #FAEEDA; color: #854F0B; }
-  .badge-drone { background: #FBEAF0; color: #993556; }
+  .badge-satellite { background: #FBEAF0; color: #993556; }
   [data-theme="dark"] .badge-metocean { background: #085041; color: #9FE1CB; }
   [data-theme="dark"] .badge-gis { background: #0C447C; color: #B5D4F4; }
   [data-theme="dark"] .badge-survey { background: #633806; color: #FAC775; }
-  [data-theme="dark"] .badge-drone { background: #72243E; color: #F4C0D1; }
+  [data-theme="dark"] .badge-satellite { background: #72243E; color: #F4C0D1; }
   .proj-title { font-size: 14px; font-weight: 500; margin-bottom: 6px; line-height: 1.4; }
   .proj-client { font-size: 12px; color: var(--txt2); }
-  .proj-meta { font-size: 11px; color: var(--txt3); margin-top: 10px; display: flex; align-items: center; gap: 4px; }
-  .proj-hidden { display: none; }
+  .proj-meta { font-size: 11px; color: var(--txt3); margin-top: 10px; }
+  .proj-view-imgs { font-size: 11px; color: var(--ocean); margin-top: 8px; font-weight: 500; }
 
-  /* ── Skills ── */
-  .skills-layout { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; }
-  .skill-item { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; }
-  .skill-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-  .skill-name { font-size: 13px; font-weight: 500; }
-  .skill-pct { font-size: 11px; color: var(--txt3); }
-  .skill-bar { height: 3px; background: var(--border-mid); border-radius: 2px; overflow: hidden; }
-  .skill-fill { height: 100%; border-radius: 2px; background: var(--ocean); transform-origin: left; transform: scaleX(0); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); }
-  .skill-fill.animated { transform: scaleX(1); }
+  /* LIGHTBOX */
+  .lightbox-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 1000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
+  .lightbox-overlay.open { display: flex; }
+  .lightbox-header { width: 100%; max-width: 860px; display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+  .lightbox-title { color: #fff; font-family: var(--font-display); font-size: 18px; font-weight: 600; }
+  .lightbox-sub { color: rgba(255,255,255,0.6); font-size: 13px; margin-top: 4px; }
+  .lightbox-close { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .lightbox-close:hover { background: rgba(255,255,255,0.25); }
+  .lightbox-img-wrap { width: 100%; max-width: 860px; background: #111; border-radius: var(--radius-lg); overflow: hidden; position: relative; min-height: 200px; display: flex; align-items: center; justify-content: center; }
+  .lightbox-img-wrap img { max-width: 100%; max-height: 60vh; object-fit: contain; display: block; }
+  .lightbox-placeholder { color: rgba(255,255,255,0.3); text-align: center; padding: 40px; }
+  .lightbox-placeholder p { font-size: 13px; margin-top: 8px; }
+  .lightbox-thumbs { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; justify-content: center; max-width: 860px; }
+  .lightbox-thumb { width: 64px; height: 48px; border-radius: 6px; border: 2px solid transparent; cursor: pointer; overflow: hidden; background: #222; flex-shrink: 0; }
+  .lightbox-thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .lightbox-thumb.active { border-color: var(--ocean); }
+  .lightbox-nav { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(255,255,255,0.15); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .lightbox-nav:hover { background: rgba(255,255,255,0.25); }
+  .lightbox-nav.prev { left: 8px; }
+  .lightbox-nav.next { right: 8px; }
 
-  /* ── Map ── */
-  .map-wrap { position: relative; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; background: #d4eddf; }
-  [data-theme="dark"] .map-wrap { background: #0d2018; }
-  #map-svg { width: 100%; display: block; }
-  .map-tooltip { position: absolute; background: var(--bg); border: 1px solid var(--border-mid); border-radius: var(--radius); padding: 10px 14px; font-size: 12px; pointer-events: none; opacity: 0; transition: opacity 0.15s; z-index: 10; max-width: 180px; box-shadow: var(--shadow); }
-  .map-tooltip strong { display: block; font-size: 13px; margin-bottom: 3px; color: var(--txt); }
-  .map-tooltip span { color: var(--txt2); line-height: 1.5; }
-  .map-legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 16px; background: var(--bg2); border-top: 1px solid var(--border); }
-  .map-legend-item { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--txt2); }
-  .map-dot { width: 10px; height: 10px; border-radius: 50%; }
+  /* SKILLS */
+  .skills-section-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+  @media(max-width:640px){ .skills-section-wrap { grid-template-columns: 1fr; } }
+  .skills-group-title { font-family: var(--font-display); font-size: 14px; font-weight: 600; color: var(--txt2); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .skill-tag { font-size: 12px; padding: 5px 12px; border-radius: 6px; border: 1px solid var(--border-mid); background: var(--bg2); color: var(--txt); }
+  .soft-tag { font-size: 12px; padding: 5px 12px; border-radius: 6px; border: 1px solid rgba(29,158,117,0.25); background: rgba(29,158,117,0.06); color: var(--ocean-mid); }
 
-  /* ── Timeline ── */
-  .timeline { position: relative; padding-left: 24px; }
+  /* MAP */
+  #map { height: 420px; border-radius: var(--radius-lg); border: 1px solid var(--border); z-index: 1; }
+  .map-legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 12px 0 0; }
+  .map-legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--txt2); }
+  .map-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+  /* TIMELINE */
+  .timeline-tabs { display: flex; gap: 6px; margin-bottom: 32px; }
+  .tl-tab { font-size: 13px; padding: 7px 18px; border-radius: 20px; border: 1px solid var(--border-mid); background: transparent; color: var(--txt2); cursor: pointer; transition: all var(--transition); font-weight: 500; }
+  .tl-tab.active { background: var(--ocean); color: #fff; border-color: var(--ocean); }
+  .timeline-panel { display: none; }
+  .timeline-panel.active { display: block; }
+  .timeline { position: relative; padding-left: 28px; }
   .timeline::before { content: ''; position: absolute; left: 7px; top: 4px; bottom: 4px; width: 1px; background: var(--border-mid); }
-  .tl-item { position: relative; margin-bottom: 28px; }
-  .tl-dot { width: 15px; height: 15px; border-radius: 50%; background: var(--ocean); position: absolute; left: -24px; top: 3px; border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--ocean); }
+  .tl-item { position: relative; margin-bottom: 32px; }
+  .tl-dot { width: 15px; height: 15px; border-radius: 50%; background: var(--ocean); position: absolute; left: -28px; top: 3px; border: 3px solid var(--bg); box-shadow: 0 0 0 1px var(--ocean); }
   .tl-period { font-size: 11px; color: var(--txt3); margin-bottom: 4px; font-weight: 500; letter-spacing: 0.3px; }
-  .tl-role { font-size: 15px; font-weight: 500; margin-bottom: 2px; }
-  .tl-company { font-size: 13px; color: var(--txt2); }
-  .tl-desc { font-size: 13px; color: var(--txt2); margin-top: 6px; line-height: 1.6; }
+  .tl-role { font-size: 15px; font-weight: 600; margin-bottom: 2px; }
+  .tl-company { font-size: 13px; color: var(--ocean-mid); font-weight: 500; margin-bottom: 6px; }
+  .tl-location { font-size: 12px; color: var(--txt3); margin-bottom: 6px; }
+  .tl-desc { font-size: 13px; color: var(--txt2); line-height: 1.7; }
 
-  /* ── Awards ── */
+  /* AWARDS */
   .awards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; }
   .award-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px; display: flex; gap: 14px; align-items: flex-start; }
-  .award-icon { font-size: 24px; flex-shrink: 0; margin-top: 2px; }
+  .award-icon { font-size: 24px; flex-shrink: 0; }
   .award-title { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
   .award-year { font-size: 11px; color: var(--txt3); }
 
-  /* ── Contact ── */
-  .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; }
+  /* CERTS */
+  .cert-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
+  .cert-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; }
+  .cert-year { font-size: 10px; font-weight: 600; color: var(--ocean); background: rgba(29,158,117,0.1); padding: 2px 7px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .cert-name { font-size: 13px; line-height: 1.4; }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
   .contact-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; text-align: center; transition: border-color var(--transition), transform var(--transition); text-decoration: none; color: inherit; display: block; }
   .contact-card:hover { border-color: var(--ocean); transform: translateY(-2px); }
   .contact-icon { font-size: 24px; margin-bottom: 10px; }
   .contact-label { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--txt3); margin-bottom: 4px; }
   .contact-val { font-size: 13px; font-weight: 500; word-break: break-all; }
-  .cta-block { margin-top: 36px; padding: 28px; background: linear-gradient(135deg, rgba(29,158,117,0.08) 0%, rgba(24,95,165,0.06) 100%); border: 1px solid var(--border); border-radius: var(--radius-lg); text-align: center; }
-  .cta-block p { color: var(--txt2); margin-bottom: 16px; font-size: 15px; }
+  .cta-block { margin-top: 36px; padding: 28px; background: linear-gradient(135deg, rgba(29,158,117,0.08), rgba(24,95,165,0.06)); border: 1px solid var(--border); border-radius: var(--radius-lg); text-align: center; }
+  .cta-block p { color: var(--txt2); margin-bottom: 16px; }
 
-  /* ── Certs ── */
-  .cert-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; }
-  .cert-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; }
-  .cert-year { font-size: 10px; font-weight: 600; color: var(--ocean); background: rgba(29,158,117,0.1); padding: 2px 7px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
-  .cert-name { font-size: 13px; line-height: 1.4; }
-
-  /* ── Footer ── */
+  /* FOOTER */
   footer { padding: 24px 32px; text-align: center; font-size: 12px; color: var(--txt3); border-top: 1px solid var(--border); }
 
-  /* ── Responsive ── */
-  @media (max-width: 640px) {
+  /* RESPONSIVE */
+  @media(max-width:640px){
     nav { padding: 0 16px; }
     .nav-links { display: none; }
     section { padding: 48px 16px; }
     .hero { padding: 60px 16px 40px; }
     .stats-bar { grid-template-columns: repeat(2, 1fr); }
     .stat-cell { border-bottom: 1px solid var(--border); }
+    .full-width-section > .inner { padding: 0 16px; }
   }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; animation: none !important; }
-  }
+  @media(prefers-reduced-motion:reduce){ *, *::before, *::after { transition: none !important; } }
 </style>
 </head>
 <body>
@@ -213,44 +210,45 @@
   </div>
   <div class="nav-actions">
     <button class="btn-dark" id="darkBtn" onclick="toggleDark()" aria-label="Toggle dark mode">🌙</button>
-    <a href="mailto:raihanjauhari@gmail.com" class="btn-cv">↗ Hire me</a>
+    <a href="mailto:raihanjauhari@gmail.com" class="btn-hire">↗ Hire me</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <div id="about">
   <div class="hero">
-    <p class="hero-eyebrow">Open to opportunities · Jakarta, Indonesia</p>
-    <div class="hero-avatar">RJ</div>
-    <h1>Raihan Jauhari <span>Pratama</span></h1>
-    <p class="hero-degree">S.Si. · Bachelor of Oceanography, Institut Teknologi Bandung</p>
-    <p class="hero-desc">Oceanographic &amp; Offshore Geospatial Engineer with 5+ years bridging metocean analysis, offshore survey operations, and marine spatial data integration for energy and infrastructure projects across Indonesia.</p>
+    <p class="hero-eyebrow">Open to opportunities worldwide</p>
+    <div class="hero-avatar">
+      <!-- Replace images/profile.jpg with your actual photo file -->
+      <img src="images/profile.jpg" alt="Raihan Jauhari Pratama"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+      <span class="avatar-fallback" style="display:none">RJP</span>
+    </div>
+    <h1><span>Raihan</span> Jauhari Pratama</h1>
+    <p class="hero-degree">Sarjana Sains (S.Si) · Bachelor of Oceanography (B.Sc) · Institut Teknologi Bandung · 2016 - 2021</p>
+    <p class="hero-desc">Metocean &amp; Geospatial Engineer with 5+ years of experience bridging metocean analysis, hydrodynamic modelling, offshore survey operations, geospatial data integration, and spatial data quality management. Experienced in delivering quality-assured marine and geospatial datasets, supporting engineering studies, enterprise GIS platforms, and data-driven decision-making for energy and infrastructure projects across Indonesia.</p>
     <div class="hero-tags">
       <span class="hero-tag">Metocean Analysis</span>
-      <span class="hero-tag">GIS / WebGIS</span>
+      <span class="hero-tag">GIS · WebGIS</span>
       <span class="hero-tag">Offshore Survey</span>
-      <span class="hero-tag">Delft3D</span>
+      <span class="hero-tag">Hydrodynamic Modelling · Delft3D</span>
       <span class="hero-tag">Python · MATLAB</span>
       <span class="hero-tag">ArcGIS · QGIS</span>
-      <span class="hero-tag">BOSIET Certified 2025</span>
+      <span class="hero-tag">BOSIET Valid Until 2029</span>
       <span class="hero-tag">TOEFL ITP 540</span>
     </div>
     <div class="hero-btns">
       <a href="#projects" class="btn-primary">View projects</a>
       <a href="#contact" class="btn-outline">Get in touch</a>
     </div>
-    <div class="hero-scroll">
-      <span>Scroll</span>
-      <div class="scroll-line"></div>
-    </div>
+    <div class="hero-scroll"><span>Scroll</span><div class="scroll-line"></div></div>
   </div>
 
-  <!-- STATS -->
   <div class="stats-bar">
     <div class="stat-cell"><div class="stat-num">5+</div><div class="stat-lbl">Years experience</div></div>
-    <div class="stat-cell"><div class="stat-num">10+</div><div class="stat-lbl">Projects delivered</div></div>
-    <div class="stat-cell"><div class="stat-num">8+</div><div class="stat-lbl">Clients served</div></div>
-    <div class="stat-cell"><div class="stat-num">3×</div><div class="stat-lbl">National awards</div></div>
+    <div class="stat-cell"><div class="stat-num">20+</div><div class="stat-lbl">Projects delivered</div></div>
+    <div class="stat-cell"><div class="stat-num">20+</div><div class="stat-lbl">Clients served</div></div>
+    <div class="stat-cell"><div class="stat-num">4×</div><div class="stat-lbl">National awards</div></div>
   </div>
 </div>
 
@@ -262,239 +260,550 @@
     <button class="filter-btn active" onclick="filterProj('all',this)">All</button>
     <button class="filter-btn" onclick="filterProj('metocean',this)">Metocean</button>
     <button class="filter-btn" onclick="filterProj('gis',this)">GIS / Data</button>
-    <button class="filter-btn" onclick="filterProj('survey',this)">Offshore Survey</button>
-    <button class="filter-btn" onclick="filterProj('drone',this)">Drone / Photogrammetry</button>
+    <button class="filter-btn" onclick="filterProj('survey',this)">Onshore / Offshore Survey</button>
+    <button class="filter-btn" onclick="filterProj('satellite',this)">Remote Sensing / Photogrammetry</button>
   </div>
   <div class="proj-grid" id="projGrid">
 
-    <div class="proj-card" data-cat="metocean">
-      <span class="proj-badge badge-metocean">Metocean</span>
-      <div class="proj-title">Metocean Study – Natarbora, Timor Leste</div>
-      <div class="proj-client">TAKA Hydrocore Indonesia</div>
-      <div class="proj-meta">Mar 2026 · Metocean Data Processor</div>
+    <div class="proj-card" data-cat="survey"
+         data-title="Geotechnical Survey JIIPE LNG Terminal and Regasification - Gresik, East Java"
+         data-client="AKR / BP / Haskoning · Jun 2026 – Present"
+         data-imgs="images/proj-gresik-1.jpg,images/proj-gresik-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-survey">Onshore / Offshore Survey</span>
+      <div class="proj-title">Geotechnical Survey JIIPE LNG Terminal and Regasification - Gresik, East Java</div>
+      <div class="proj-client">AKR / BP / Haskoning</div>
+      <div class="proj-meta">Jun 2026 – Present · Positioning Surveyor</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="metocean">
-      <span class="proj-badge badge-metocean">Metocean</span>
-      <div class="proj-title">Metocean Study – South Numbing Island, Kepulauan Riau</div>
-      <div class="proj-client">TAKA Hydrocore Indonesia</div>
-      <div class="proj-meta">Feb 2026 · Metocean Data Processor</div>
+    <div class="proj-card" data-cat="satellite"
+         data-title="Workshop Asset Mapping for Facility Management – Bogor, West Java"
+         data-client="PT. HYDROCORE · Jun 2026"
+         data-imgs="images/proj-workshop-mapping-1.jpg,images/proj-workshop-mapping-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-satellite">Remote Sensing / Photogrammetry</span>
+      <div class="proj-title">Workshop Asset Mapping for Facility Management – Bogor, West Java</div>
+      <div class="proj-client">PT. HYDROCORE</div>
+      <div class="proj-meta">Jun 2026 · UAV Mapping Specialist</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="survey">
-      <span class="proj-badge badge-survey">Offshore Survey</span>
-      <div class="proj-title">Indonesia Kutei North Hub – Jack-Up Positioning</div>
-      <div class="proj-client">ENI / Fugro</div>
+    <div class="proj-card" data-cat="metocean"
+         data-title="Weather Window Services EPCI MDA & MBH Fields - Madura Strait, East Java"
+         data-client="Husky CNOOC Madura Limited · Mar 2026"
+         data-imgs="images/proj-madura-1.jpg,images/proj-madura-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-metocean">Metocean</span>
+      <div class="proj-title">Weather Window Services EPCI MDA & MBH Fields - Madura Strait, East Java</div>
+      <div class="proj-client">Husky CNOOC Madura Limited</div>
+      <div class="proj-meta">Mar 2026 · Metocean Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="metocean"
+         data-title="Weather Window Services for the Sunrise to Natarbora Pipeline Feasibility Study - Timor Leste"
+         data-client="Ministry of Petroleum & Mineral Resources / HR Wallingford · Mar 2026"
+         data-imgs="images/proj-natarbora-1.jpg,images/proj-natarbora-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-metocean">Metocean</span>
+      <div class="proj-title">Weather Window Services for the Sunrise to Natarbora Pipeline Feasibility Study - Timor Leste</div>
+      <div class="proj-client">Ministry of Petroleum & Mineral Resources / HR Wallingford</div>
+      <div class="proj-meta">Mar 2026 · Metocean Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="metocean"
+         data-title="Weather Window Services – Numbing Island, Bintan"
+         data-client="PT. HYDROCORE · Feb 2026"
+         data-imgs="images/proj-numbing-1.jpg,images/proj-numbing-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-metocean">Metocean</span>
+      <div class="proj-title">Weather Window Services – Numbing Island, Bintan</div>
+      <div class="proj-client">PT. HYDROCORE</div>
+      <div class="proj-meta">Feb 2026 · Metocean Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="survey"
+         data-title="Indonesia Kutei North Hub"
+         data-client="ENI North Ganal / Fugro · Dec 2025 – Jan 2026"
+         data-imgs="images/proj-kutei-1.jpg,images/proj-kutei-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-survey">Onshore / Offshore Survey</span>
+      <div class="proj-title">Indonesia Kutei North Hub – Kutai Kertanegara, East Kalimantan</div>
+      <div class="proj-client">ENI North Ganal / Fugro</div>
       <div class="proj-meta">Dec 2025 – Jan 2026 · Positioning Surveyor</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="metocean">
+    <div class="proj-card" data-cat="metocean"
+         data-title="Metocean Study for Intertidal Geophysical & Geotechnical Survey Enhancement – Saumlaki, Maluku"
+         data-client="INPEX Masela · Dec 2025"
+         data-imgs="images/proj-saumlaki-1.jpg,images/proj-saumlaki-2.jpg"
+         onclick="openLightbox(this)">
       <span class="proj-badge badge-metocean">Metocean</span>
-      <div class="proj-title">Metocean Study – Saumlaki, Maluku</div>
-      <div class="proj-client">TAKA Hydrocore Indonesia &amp; INPEX Masela</div>
-      <div class="proj-meta">Dec 2025 · Metocean Data Processor</div>
+      <div class="proj-title">Metocean Study for Intertidal Geophysical & Geotechnical Survey Enhancement – Saumlaki, Maluku</div>
+      <div class="proj-client">INPEX Masela</div>
+      <div class="proj-meta">Dec 2025 · Metocean Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="gis">
+    <div class="proj-card" data-cat="gis"
+         data-title="Crescent Indonesian Cable Route Survey - Batam to Singapore"
+         data-client="Keppel · Oct 2025 – Feb 2026"
+         data-imgs="images/proj-crescent-1.jpg,images/proj-crescent-2.jpg"
+         onclick="openLightbox(this)">
       <span class="proj-badge badge-gis">GIS / Data</span>
-      <div class="proj-title">Crescent – Indonesian Cable Route Survey</div>
+      <div class="proj-title">Crescent Indonesian Cable Route Survey - Batam to Singapore</div>
       <div class="proj-client">Keppel</div>
-      <div class="proj-meta">Oct 2025 – Feb 2026 · GIS Specialist</div>
+      <div class="proj-meta">Oct 2025 – Feb 2026 · Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="metocean">
+    <div class="proj-card" data-cat="metocean"
+         data-title="Metocean Study for Bathymetric Survey – Hu'u, NTB"
+         data-client="STM / Vale · Sep 2025"
+         data-imgs="images/proj-huu-1.jpg,images/proj-huu-2.jpg"
+         onclick="openLightbox(this)">
       <span class="proj-badge badge-metocean">Metocean</span>
-      <div class="proj-title">Metocean Study – Hu'u, NTB</div>
-      <div class="proj-client">TAKA Hydrocore Indonesia</div>
-      <div class="proj-meta">Sep 2025 · Metocean Data Processor</div>
+      <div class="proj-title">Metocean Study for Bathymetric Survey – Hu'u, West Nusa Tenggara</div>
+      <div class="proj-client">STM / Vale </div>
+      <div class="proj-meta">Sep 2025 · Metocean Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="survey">
-      <span class="proj-badge badge-survey">Offshore Survey</span>
-      <div class="proj-title">Jetty Baru – Nearshore Geotechnical, Bathymetry &amp; Metocean</div>
-      <div class="proj-client">Medco Power</div>
-      <div class="proj-meta">May – Jun 2025 · Party Chief Surveyor</div>
+    <div class="proj-card" data-cat="satellite"
+         data-title="Office Asset Mapping for Facility Management – South Tangerang. Banten"
+         data-client="PT. HYDROCORE · Jul 2025"
+         data-imgs="images/proj-office-mapping-1.jpg,images/proj-office-mapping-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-satellite">Remote Sensing / Photogrammetry</span>
+      <div class="proj-title">Office Asset Mapping for Facility Management – South Tangerang. Banten</div>
+      <div class="proj-client">PT. HYDROCORE</div>
+      <div class="proj-meta">Jul 2025 · UAV Mapping Specialist</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="gis">
+    <div class="proj-card" data-cat="survey metocean gis"
+         data-title="Jetty Baru Nearshore & Landing Point Geotechnical, Bathymetry & Metocean - Bulan Island, Batam"
+         data-client="Pacific Medco Solar Energy · May – Jun 2025"
+         data-imgs="images/proj-jetty-1.jpg,images/proj-jetty-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-survey">Onshore / Offshore Survey</span>
+      <span class="proj-badge badge-metocean">Metocean</span>
       <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Jetty Baru Nearshore & Landing Point Geotechnical, Bathymetry &amp; Metocean - Bulan Island, Batam</div>
+      <div class="proj-client">Pacific Medco Solar Energy</div>
+      <div class="proj-meta">May – Aug 2025 · Party Chief Surveyor / Metocean Engineer / Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="survey"
+         data-title="Tangguh UCC Onshore Site Investigation"
+         data-client="BP / JGC · Feb 2025 – Feb 2026"
+         data-imgs="images/proj-tangguh-1.jpg,images/proj-tangguh-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-survey">Onshore / Offshore Survey</span>
       <div class="proj-title">Tangguh UCC Onshore Site Investigation</div>
       <div class="proj-client">BP / JGC</div>
       <div class="proj-meta">Feb 2025 – Feb 2026 · Support Project Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
-    <div class="proj-card" data-cat="drone">
-      <span class="proj-badge badge-drone">Drone</span>
-      <div class="proj-title">Onshore &amp; Intertidal Geophysical Survey – INPEX</div>
+    <div class="proj-card" data-cat="satellite gis"
+         data-title="Onshore & Intertidal Geophysical & Geotechnical Survey – Saumlaki, Maluku"
+         data-client="INPEX Masela · Nov – Dec 2024"
+         data-imgs="images/proj-inpex-1.jpg,images/proj-inpex-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-satellite">Remote Sensing / Photogrammetry</span>
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Onshore &amp; Intertidal Geophysical Survey – Saumlaki, Maluku</div>
       <div class="proj-client">INPEX Masela</div>
-      <div class="proj-meta">Nov – Dec 2024 · Drone Data Processor</div>
+      <div class="proj-meta">Nov – Dec 2024 · Drone Data Processor / Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="gis"
+         data-title="Geospatial Data Quality Framework Development"
+         data-client="Diskominfo Provinsi Jawa Barat · Jul – Sep 2024"
+         data-imgs="images/proj-geoquality-1.jpg,images/proj-geoquality-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Geospatial Data Quality Framework Development</div>
+      <div class="proj-client">Diskominfo Provinsi Jawa Barat</div>
+      <div class="proj-meta">Jul – Sep 2024 · Geospatial Data Quality Analyst</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="satellite"
+         data-title="Floating Debris Distribution Analysis – Citarum River, West Java"
+         data-client="Satgas Citarum Harum · Jun – Jul 2024"
+         data-imgs="images/proj-citarum-1.jpg,images/proj-citarum-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-satellite">Remote Sensing / Photogrammetry</span>
+      <div class="proj-title">Floating Debris Distribution Analysis – Citarum River, West Java</div>
+      <div class="proj-client">Satgas Citarum Harum</div>
+      <div class="proj-meta">Jun – Jul 2024 · Remote Sensing Analyst</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="gis"
+         data-title="Geospatial Analysis for Public High School Enrollment Zoning"
+         data-client="Dinas Pendidikan Provinsi Jawa Barat · Jun – Jul 2024"
+         data-imgs="images/proj-zoning-1.jpg,images/proj-zoning-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Geospatial Analysis for Public High School Enrollment Zoning</div>
+      <div class="proj-client">Dinas Pendidikan Provinsi Jawa Barat</div>
+      <div class="proj-meta">Jun – Jul 2024 · Geospatial Analyst</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="gis"
+         data-title="Administrative Boundary Geodatabase Integration"
+         data-client="BAPPEDA Provinsi Jawa Barat · Oct – Nov 2023"
+         data-imgs="images/proj-boundary-1.jpg,images/proj-boundary-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Administrative Boundary Geodatabase Integration</div>
+      <div class="proj-client">BAPPEDA Provinsi Jawa Barat</div>
+      <div class="proj-meta">Oct – Nov 2023 · Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="satellite"
+         data-title="Hotspot Analysis of the Sarimukti Landfill Fire – West Bandung, West Java"
+         data-client="Dinas Lingkungan Hidup Provinsi Jawa Barat · Aug – Sep 2023"
+         data-imgs="images/proj-sarimukti-1.jpg,images/proj-sarimukti-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-satellite">Remote Sensing / Photogrammetry</span>
+      <div class="proj-title">Hotspot Analysis of the Sarimukti Landfill Fire – West Bandung, West Java</div>
+      <div class="proj-client">Dinas Lingkungan Hidup Provinsi Jawa Barat</div>
+      <div class="proj-meta">Aug – Sep 2023 · Remote Sensing Analyst</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="gis"
+         data-title="Real-Time Earthquake Monitoring WebGIS Dashboard"
+         data-client="BPBD Provinsi Jawa Barat · Jan – Mar 2023"
+         data-imgs="images/proj-earthquake-1.jpg,images/proj-earthquake-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Real-Time Earthquake Monitoring WebGIS Dashboard</div>
+      <div class="proj-client">BPBD Provinsi Jawa Barat</div>
+      <div class="proj-meta">Jan – Mar 2023 · Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="gis"
+         data-title="West Java One Map Geoportal"
+         data-client="Diskominfo Provinsi Jawa Barat · Jan – Mar 2023"
+         data-imgs="images/proj-one-map-1.jpg,images/proj-one-map-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">West Java One Map Geoportal</div>
+      <div class="proj-client">Diskominfo Provinsi Jawa Barat</div>
+      <div class="proj-meta">Jan 2023 – Dec 2024 · Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="gis"
+         data-title="Cianjur Earthquake Emergency Response WebGIS Platform"
+         data-client="BPBD Provinsi Jawa Barat · Jan – Mar 2023"
+         data-imgs="images/proj-cianjur-1.jpg,images/proj-cianjur-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-gis">GIS / Data</span>
+      <div class="proj-title">Cianjur Earthquake Emergency Response WebGIS Platform</div>
+      <div class="proj-client">BPBD Provinsi Jawa Barat</div>
+      <div class="proj-meta">Dec 2022 – Jan 2023 · Geospatial Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
+    </div>
+
+    <div class="proj-card" data-cat="metocean"
+         data-title="The Effect of Current Velocity on Submarine Cable Stability in Lhokseumawe-Medan Waters"
+         data-client="Institut Teknologi Bandung · Aug 2019 – Apr 2021"
+         data-imgs="images/proj-thesis-1.jpg,images/proj-thesis-2.jpg"
+         onclick="openLightbox(this)">
+      <span class="proj-badge badge-metocean">Metocean</span>
+      <div class="proj-title">The Effect of Current Velocity on Submarine Cable Stability in Lhokseumawe-Medan Waters</div>
+      <div class="proj-client">Institut Teknologi Bandung</div>
+      <div class="proj-meta">Aug 2019 – Apr 2021 · Metocean Engineer</div>
+      <div class="proj-view-imgs">📷 View outputs →</div>
     </div>
 
   </div>
 </section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightboxOutside(event)">
+  <div class="lightbox-header">
+    <div>
+      <div class="lightbox-title" id="lbTitle"></div>
+      <div class="lightbox-sub" id="lbClient"></div>
+    </div>
+    <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  </div>
+  <div class="lightbox-img-wrap">
+    <button class="lightbox-nav prev" onclick="lbNav(-1)">‹</button>
+    <img id="lbMainImg" src="" alt="Project output" style="display:none">
+    <div class="lightbox-placeholder" id="lbPlaceholder">
+      <div style="font-size:40px">🖼️</div>
+      <p>Add your output images to the <strong>images/</strong> folder<br>using the filename shown on this card.</p>
+    </div>
+    <button class="lightbox-nav next" onclick="lbNav(1)">›</button>
+  </div>
+  <div class="lightbox-thumbs" id="lbThumbs"></div>
+</div>
 
 <!-- SKILLS -->
-<section id="skills" style="background: var(--bg2); max-width: 100%; padding: 72px 0;">
-  <div style="max-width: 1000px; margin: 0 auto; padding: 0 32px;">
+<div class="full-width-section" style="background: var(--bg2);" id="skills">
+  <div class="inner">
     <p class="section-eyebrow">Capabilities</p>
-    <h2 class="section-title">Technical skills</h2>
-    <div class="skills-layout" id="skillsContainer">
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">ArcGIS Pro / QGIS</span><span class="skill-pct">95%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.95"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">Python (Geospatial)</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.85"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">MATLAB</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.80"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">Delft3D</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.75"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">HYDROpro</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.80"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">PostgreSQL / PostGIS</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.70"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">Agisoft Metashape</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.75"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">AutoCAD / Global Mapper</span><span class="skill-pct">80%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.80"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">GeoServer / ArcGIS Server</span><span class="skill-pct">75%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.75"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">MBES / SSS / SBP Processing</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.70"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">ADCP / Tide / CTD</span><span class="skill-pct">85%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.85"></div></div></div>
-      <div class="skill-item"><div class="skill-header"><span class="skill-name">SQL / Data QA</span><span class="skill-pct">70%</span></div><div class="skill-bar"><div class="skill-fill" data-w="0.70"></div></div></div>
+    <h2 class="section-title">Skills</h2>
+    <div class="skills-section-wrap">
+      <div>
+        <div class="skills-group-title">GIS & CAD </div>
+        <div class="skill-tags" style="margin-bottom:24px">
+          <span class="skill-tag">ArcGIS Pro</span>
+          <span class="skill-tag">ArcMap</span>
+          <span class="skill-tag">QGIS</span>
+          <span class="skill-tag">Global Mapper</span>
+          <span class="skill-tag">ArcGIS Enterprise</span>
+          <span class="skill-tag">ArcGIS Online</span>
+          <span class="skill-tag">GeoServer</span>
+          <span class="skill-tag">GeoNetwork</span>
+          <span class="skill-tag">PostgreSQL · PostGIS</span>
+          <span class="skill-tag">FGDB · GeoPackage</span>
+          <span class="skill-tag">WMS · WFS · WMTS</span>
+          <span class="skill-tag">SSDM · OISDM · LSDM</span>
+          <span class="skill-tag">AutoCAD Map 3D · Civil 3D · SketchUp</span>
+        </div>
+
+        <div class="skills-group-title">Metocean</div>
+        <div class="skill-tags" style="margin-bottom:24px">
+          <span class="skill-tag">ADCP</span>
+          <span class="skill-tag">Tide Gauge</span>
+          <span class="skill-tag">CTD / SVP</span>
+          <span class="skill-tag">Weather Station</span>
+          <span class="skill-tag">Levelling</span>
+          <span class="skill-tag">Hydrodynamic Modeling · Delft3D</span>
+          <span class="skill-tag">Extreme Value Analysis</span>
+          <span class="skill-tag">Weather Window</span>
+          <span class="skill-tag">Harmonic Analysis</span>
+        </div>
+
+        <div class="skills-group-title">Offshore Survey & Positioning</div>
+        <div class="skill-tags" style="margin-bottom:24px">
+          <span class="skill-tag">RTK GNSS / DGPS</span>
+          <span class="skill-tag">HYDROpro</span>
+          <span class="skill-tag">Geodetic Control</span>
+          <span class="skill-tag">Total Station</span>
+          <span class="skill-tag">SBES · MBES · SSS · SBP · Magnetometer</span>
+          <span class="skill-tag">Geotechnical Positioning</span>
+          <span class="skill-tag">Submarine Cable / Pipeline Survey</span>
+          <span class="skill-tag">Jack-Up / Pontoon / Barge Positioning</span>
+        </div>
+
+        <div class="skills-group-title">Programming & Data</div>
+        <div class="skill-tags">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">MATLAB</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">HTML · CSS · JavaScript</span>
+          <span class="skill-tag">GitHub</span>
+          <span class="skill-tag">NetCDF · GeoTIFF · GeoJSON</span>
+          <span class="skill-tag">Data QA/QC</span>
+          <span class="skill-tag">Metadata Management</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="skills-group-title">Remote Sensing & Photogrammetry</div>
+        <div class="skill-tags" style="margin-bottom:24px">
+          <span class="skill-tag">Agisoft Metashape</span>
+          <span class="skill-tag">Pix4D</span>
+          <span class="skill-tag">DroneDeploy</span>
+          <span class="skill-tag">UAV / LiDAR Mapping</span>
+          <span class="skill-tag">Orthomosaic</span>
+          <span class="skill-tag">Digital Elevation Model</span>
+          <span class="skill-tag">Point Cloud</span>
+          <span class="skill-tag">NDVI / Vegetation Index</span>
+          <span class="skill-tag">Change Detection</span>
+          <span class="skill-tag">Image Classification</span>
+          <span class="skill-tag">DJI Mavic 3 Pro</span>
+        </div>
+
+        <div class="skills-group-title">Leadership & Management</div>
+        <div class="skill-tags" style="margin-bottom:24px">
+          <span class="soft-tag">Party Chief / Field Leadership</span>
+          <span class="soft-tag">Project Planning</span>
+          <span class="soft-tag">Team Coordination</span>
+          <span class="soft-tag">HSE Compliance</span>
+          <span class="soft-tag">Stakeholder Management</span>
+          <span class="soft-tag">Training & Knowledge Transfer</span>
+        </div>
+
+        <div class="skills-group-title">Communication & Reporting</div>
+        <div class="skill-tags">
+          <span class="soft-tag">Technical Report Writing</span>
+          <span class="soft-tag">Client Presentations</span>
+          <span class="soft-tag">Data Storytelling</span>
+          <span class="soft-tag">Cross-disciplinary Collaboration</span>
+          <span class="soft-tag">English (TOEFL ITP 540)</span>
+          <span class="soft-tag">Bahasa Indonesia</span>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- MAP -->
-<section id="map" style="max-width:100%; padding: 72px 0;">
-  <div style="max-width: 1000px; margin: 0 auto; padding: 0 32px;">
+<div class="full-width-section" id="map-section">
+  <div class="inner">
     <p class="section-eyebrow">Coverage</p>
     <h2 class="section-title">Project locations</h2>
-    <div class="map-wrap">
-      <div class="map-tooltip" id="mapTip"></div>
-      <svg id="map-svg" viewBox="0 0 960 400" xmlns="http://www.w3.org/2000/svg">
-        <rect width="960" height="400" fill="#c8e8d5"/>
-        <!-- Sea areas -->
-        <rect x="0" y="0" width="960" height="400" fill="#b8dfd0" rx="0"/>
-        <!-- Landmasses – simplified Indonesia -->
-        <!-- Sumatera -->
-        <path d="M120,180 L160,150 L200,140 L240,160 L260,200 L250,240 L220,260 L180,250 L140,220 Z" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- Jawa -->
-        <path d="M200,270 L280,260 L360,265 L420,270 L440,280 L420,290 L360,295 L280,290 L200,285 Z" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- Kalimantan -->
-        <path d="M310,120 L380,90 L460,95 L510,120 L530,170 L520,220 L480,250 L430,255 L380,240 L340,200 L310,160 Z" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- Sulawesi -->
-        <path d="M590,130 L630,110 L650,140 L640,180 L650,220 L630,250 L600,260 L580,240 L570,200 L560,160 L570,130 Z" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- Maluku area -->
-        <ellipse cx="730" cy="200" rx="30" ry="50" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- Papua -->
-        <path d="M780,150 L850,140 L900,160 L920,200 L890,240 L840,250 L800,240 L770,210 L760,170 Z" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- Timor -->
-        <ellipse cx="660" cy="310" rx="45" ry="18" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
-        <!-- NTB / Lombok / Sumbawa -->
-        <ellipse cx="470" cy="300" rx="35" ry="14" fill="#d4eddf" stroke="#a8d8c0" stroke-width="0.5"/>
+    <div id="map"></div>
+    <div class="map-legend">
+      <div class="map-legend-item"><div class="map-dot" style="background:#1D9E75"></div>Metocean</div>
+      <div class="map-legend-item"><div class="map-dot" style="background:#185FA5"></div>GIS / Data</div>
+      <div class="map-legend-item"><div class="map-dot" style="background:#BA7517"></div>Onshore / Offshore Survey</div>
+      <div class="map-legend-item"><div class="map-dot" style="background:#D85A30"></div>Remote Sensing / Photogrammetry</div>
+    </div>
+  </div>
+</div>
 
-        <!-- Region labels -->
-        <text x="180" y="200" text-anchor="middle" font-size="9" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Sumatera</text>
-        <text x="320" y="280" text-anchor="middle" font-size="9" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Jawa</text>
-        <text x="420" y="175" text-anchor="middle" font-size="9" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Kalimantan</text>
-        <text x="610" y="190" text-anchor="middle" font-size="9" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Sulawesi</text>
-        <text x="730" y="200" text-anchor="middle" font-size="8" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Maluku</text>
-        <text x="850" y="195" text-anchor="middle" font-size="9" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Papua</text>
-        <text x="660" y="313" text-anchor="middle" font-size="8" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">Timor Leste</text>
-        <text x="470" y="303" text-anchor="middle" font-size="7.5" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.8">NTB</text>
-        <text x="145" y="295" text-anchor="middle" font-size="8" fill="#5a9e7a" font-family="Inter,sans-serif" opacity="0.7">Kepulauan Riau</text>
+<!-- TIMELINE -->
+<section id="timeline">
+  <p class="section-eyebrow">Career</p>
+  <h2 class="section-title">Timeline</h2>
 
-        <!-- Project pins -->
-        <g class="map-pin" data-tip="Natarbora, Timor Leste|Metocean Study · Mar 2026|TAKA Hydrocore Indonesia" onclick="showMapTip(event,this)">
-          <circle cx="658" cy="310" r="10" fill="#1D9E75" opacity="0.9"/>
-          <text x="658" y="314" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">M</text>
-        </g>
-        <g class="map-pin" data-tip="South Numbing Island, Kepulauan Riau|Metocean Study · Feb 2026|TAKA Hydrocore Indonesia" onclick="showMapTip(event,this)">
-          <circle cx="148" cy="288" r="10" fill="#1D9E75" opacity="0.9"/>
-          <text x="148" y="292" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">M</text>
-        </g>
-        <g class="map-pin" data-tip="Kutei, Kalimantan|ENI / Fugro · Dec 2025 – Jan 2026|Positioning Surveyor – Jack-Up" onclick="showMapTip(event,this)">
-          <circle cx="480" cy="165" r="10" fill="#185FA5" opacity="0.9"/>
-          <text x="480" y="169" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">S</text>
-        </g>
-        <g class="map-pin" data-tip="Saumlaki, Maluku|Metocean Study · Dec 2025|TAKA Hydrocore & INPEX Masela" onclick="showMapTip(event,this)">
-          <circle cx="728" cy="250" r="10" fill="#1D9E75" opacity="0.9"/>
-          <text x="728" y="254" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">M</text>
-        </g>
-        <g class="map-pin" data-tip="Indonesian Cable Route|GIS Specialist · Oct 2025 – Feb 2026|Keppel" onclick="showMapTip(event,this)">
-          <circle cx="350" cy="275" r="10" fill="#185FA5" opacity="0.9"/>
-          <text x="350" y="279" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">G</text>
-        </g>
-        <g class="map-pin" data-tip="Hu'u, NTB|Metocean Study · Sep 2025|TAKA Hydrocore Indonesia" onclick="showMapTip(event,this)">
-          <circle cx="470" cy="300" r="10" fill="#1D9E75" opacity="0.9"/>
-          <text x="470" y="304" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">M</text>
-        </g>
-        <g class="map-pin" data-tip="Jetty Baru, Nearshore|Party Chief Surveyor · May–Jun 2025|Medco Power" onclick="showMapTip(event,this)">
-          <circle cx="260" cy="275" r="10" fill="#BA7517" opacity="0.9"/>
-          <text x="260" y="279" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">S</text>
-        </g>
-        <g class="map-pin" data-tip="INPEX Masela, Maluku|Drone Data Processor · Nov–Dec 2024|Agisoft Metashape" onclick="showMapTip(event,this)">
-          <circle cx="710" cy="230" r="10" fill="#D85A30" opacity="0.9"/>
-          <text x="710" y="234" text-anchor="middle" font-size="9" fill="white" font-weight="600" font-family="Inter,sans-serif">D</text>
-        </g>
-      </svg>
-      <div class="map-legend">
-        <div class="map-legend-item"><div class="map-dot" style="background:#1D9E75"></div>Metocean</div>
-        <div class="map-legend-item"><div class="map-dot" style="background:#185FA5"></div>GIS / Survey</div>
-        <div class="map-legend-item"><div class="map-dot" style="background:#BA7517"></div>Offshore Survey</div>
-        <div class="map-legend-item"><div class="map-dot" style="background:#D85A30"></div>Drone</div>
+  <div class="timeline-tabs">
+    <button class="tl-tab active" onclick="switchTab('project', this)">📋 Project History</button>
+    <button class="tl-tab" onclick="switchTab('work', this)">🏢 Work History</button>
+  </div>
+
+  <!-- PROJECT HISTORY -->
+  <div class="timeline-panel active" id="panel-project">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Mar 2026</div>
+        <div class="tl-role">Metocean Study – Natarbora, Timor Leste</div>
+        <div class="tl-company">TAKA Hydrocore Indonesia</div>
+        <div class="tl-desc">Weather window availability & persistence analysis (20-year dataset) for cable route survey support. Built Python automation for multi-parameter wind, wave, and current analysis.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Feb 2026</div>
+        <div class="tl-role">Metocean Study – South Numbing Island, Kepulauan Riau</div>
+        <div class="tl-company">TAKA Hydrocore Indonesia</div>
+        <div class="tl-desc">Weekly weather window and persistence analysis to identify optimal survey windows for a 3-week geophysical campaign. Python-based operability assessment tools.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Oct 2025 – Feb 2026</div>
+        <div class="tl-role">Crescent – Indonesian Cable Route Survey</div>
+        <div class="tl-company">Keppel · GIS Specialist</div>
+        <div class="tl-desc">Data conversion and integration of geotechnical and geophysical survey datasets into GIS-compatible formats. Built SSDM-compliant geodatabase for project-wide accessibility.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Dec 2025 – Jan 2026</div>
+        <div class="tl-role">Indonesia Kutei North Hub – Jack-Up Positioning</div>
+        <div class="tl-company">ENI / Fugro · Positioning Surveyor</div>
+        <div class="tl-desc">High-accuracy GNSS positioning for geotechnical borehole investigations on Jack-Up barge. Managed geodetic control, coordinate transformation, and real-time deviation reporting.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Dec 2025</div>
+        <div class="tl-role">Metocean Study – Saumlaki, Maluku</div>
+        <div class="tl-company">TAKA Hydrocore Indonesia & INPEX Masela · Metocean Data Processor</div>
+        <div class="tl-desc">Statistical and directional analysis (monthly stats & metocean roses) for wind, wave, and current. Derived operational limits (max, P90, mean) to support offshore design.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Sep 2025</div>
+        <div class="tl-role">Metocean Study – Hu'u, NTB</div>
+        <div class="tl-company">TAKA Hydrocore Indonesia · Metocean Data Processor</div>
+        <div class="tl-desc">Statistical and directional analysis of wind, wave, and current. Evaluated workability thresholds and built Python-based automated metocean processing tools.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">May – Jun 2025</div>
+        <div class="tl-role">Jetty Baru – Nearshore Geotechnical, Bathymetry & Metocean</div>
+        <div class="tl-company">Medco Power · Party Chief Surveyor</div>
+        <div class="tl-desc">Led full field survey: ADCP, tide gauge, weather station, echo sounder, GPS deployment. Oversaw HSE compliance, benchmark establishment, and preliminary data QC.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Feb 2025 – Feb 2026</div>
+        <div class="tl-role">Tangguh UCC Onshore Site Investigation</div>
+        <div class="tl-company">BP / JGC · Support Project Engineer</div>
+        <div class="tl-desc">Prepared project schedules, client kick-off materials, and topographic survey reports. Compiled technical data packages for field mobilisation.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Nov – Dec 2024</div>
+        <div class="tl-role">Onshore & Intertidal Geophysical Survey – INPEX Masela</div>
+        <div class="tl-company">INPEX Masela · Drone Data Processor</div>
+        <div class="tl-desc">Photogrammetric processing of DJI Mavic 3 Pro imagery using Agisoft Metashape — orthomosaic, DSM, DTM. Delivered final outputs in DWG/TIF/ECW format.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WORK HISTORY -->
+  <div class="timeline-panel" id="panel-work">
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Nov 2024 – Present</div>
+        <div class="tl-role">Oceanographic Engineer</div>
+        <div class="tl-company">PT. HYDROCORE</div>
+        <div class="tl-location">📍 Jakarta, Indonesia</div>
+        <div class="tl-desc">End-to-end delivery of metocean studies, offshore survey operations, and GIS data management for oil, gas, and energy clients across Indonesia. Roles spanning metocean data processing, GIS specialist, positioning surveyor, party chief, and project engineer across multiple simultaneous projects.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Jan 2023 – Dec 2024</div>
+        <div class="tl-role">Geospatial Engineer</div>
+        <div class="tl-company">Jabar Digital Service</div>
+        <div class="tl-location">📍 Bandung, West Java, Indonesia</div>
+        <div class="tl-desc">Designed and maintained marine geodatabases, geospatial web services (GeoServer, ArcGIS Server), and WebGIS platforms. Managed "Satu Peta Jabar" geoportal and "Satu Data Jabar" data portal. Won national Bhumandala awards for geospatial innovation in 2023 and 2024.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Jan 2022 – Dec 2022</div>
+        <div class="tl-role">Data Quality Officer</div>
+        <div class="tl-company">Jabar Digital Service</div>
+        <div class="tl-location">📍 Bandung, West Java, Indonesia</div>
+        <div class="tl-desc">Implemented QA/QC procedures and validation frameworks for geospatial and tabular datasets. Developed data quality scoring systems across five dimensions: conformity, uniqueness, consistency, timeliness, and completeness. Won national Bhumandala Gold Trophy for geospatial innovation in 2021.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-period">Aug 2021 – Dec 2021</div>
+        <div class="tl-role">Data Entry</div>
+        <div class="tl-company">Jabar Digital Service</div>
+        <div class="tl-location">📍 Bandung, West Java, Indonesia</div>
+        <div class="tl-desc">Data entry, structuring, and standardisation of geospatial datasets for West Java provincial government systems. Foundation for later work in data quality and geospatial engineering.</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TIMELINE -->
-<section id="timeline">
-  <p class="section-eyebrow">Career</p>
-  <h2 class="section-title">Work history</h2>
-  <div class="timeline">
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-period">2025 – Present</div>
-      <div class="tl-role">Metocean Data Processor &amp; GIS Specialist</div>
-      <div class="tl-company">TAKA Hydrocore Indonesia / Keppel</div>
-      <div class="tl-desc">Delivered metocean studies for cable route and offshore surveys across Timor Leste, Kepulauan Riau, Maluku, and NTB. Built Python-based automation for multi-parameter weather window analysis. Managed SSDM-compliant geodatabase for Keppel cable route project.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-period">Dec 2025 – Jan 2026</div>
-      <div class="tl-role">Positioning Surveyor</div>
-      <div class="tl-company">ENI / Fugro – Kutei North Hub</div>
-      <div class="tl-desc">Executed high-accuracy GNSS positioning for geotechnical borehole investigations on Jack-Up barge. Managed geodetic control, coordinate transformation, and real-time deviation reporting.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-period">May – Jun 2025</div>
-      <div class="tl-role">Party Chief Surveyor</div>
-      <div class="tl-company">Medco Power – Jetty Baru Nearshore</div>
-      <div class="tl-desc">Led full field survey operations: metocean measurement (ADCP, tide gauge, weather station), bathymetric mapping, and water/sediment sampling. Oversaw team of field surveyors and coordinated with onshore processing team.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-period">Feb 2025 – Feb 2026</div>
-      <div class="tl-role">Support Project Engineer</div>
-      <div class="tl-company">BP / JGC – Tangguh UCC</div>
-      <div class="tl-desc">Prepared project schedules, client documentation, and topographic survey reports for onshore site investigation. Coordinated technical data packages and mobilisation requirements.</div>
-    </div>
-    <div class="tl-item">
-      <div class="tl-dot"></div>
-      <div class="tl-period">Nov – Dec 2024</div>
-      <div class="tl-role">Drone Data Processor</div>
-      <div class="tl-company">INPEX Masela – Onshore &amp; Intertidal Survey</div>
-      <div class="tl-desc">Processed DJI Mavic 3 Pro aerial imagery using Agisoft Metashape — image alignment, point cloud generation, orthomosaic, DSM, and DTM. Delivered final geospatial products in DWG/TIF/ECW format.</div>
-    </div>
-  </div>
-</section>
-
 <!-- AWARDS -->
-<section style="background: var(--bg2); max-width: 100%; padding: 72px 0;">
-  <div style="max-width: 1000px; margin: 0 auto; padding: 0 32px;">
+<div class="full-width-section" style="background: var(--bg2);">
+  <div class="inner">
     <p class="section-eyebrow">Recognition</p>
     <h2 class="section-title">Awards</h2>
     <div class="awards-grid">
-      <div class="award-card"><div class="award-icon">🥇</div><div><div class="award-title">Bhumandala Kanaka – Simpul Jaringan Terbaik</div><div class="award-year">Bhumandala Awards 2024 · Geospatial Information Network</div></div></div>
-      <div class="award-card"><div class="award-icon">🏆</div><div><div class="award-title">Best Innovation – Gold Trophy, West Java</div><div class="award-year">Bhumandala Innovation Awards 2023 · Utilization of Geospatial Information</div></div></div>
-      <div class="award-card"><div class="award-icon">🥇</div><div><div class="award-title">Bhumandala Kanaka – Simpul Jaringan Terbaik</div><div class="award-year">Bhumandala Awards 2022 · Geospatial Information Network</div></div></div>
-      <div class="award-card"><div class="award-icon">🏆</div><div><div class="award-title">Best Innovation – Gold Trophy, West Java</div><div class="award-year">Bhumandala Innovation Awards 2021 · Utilization of Geospatial Information</div></div></div>
+      <div class="award-card"><div class="award-icon">🥇</div><div><div class="award-title">Bhumandala Kanaka – Simpul Jaringan Terbaik</div><div class="award-year">Bhumandala Awards 2024</div></div></div>
+      <div class="award-card"><div class="award-icon">🏆</div><div><div class="award-title">Best Innovation – Gold Trophy, West Java</div><div class="award-year">Bhumandala Innovation Awards 2023</div></div></div>
+      <div class="award-card"><div class="award-icon">🥇</div><div><div class="award-title">Bhumandala Kanaka – Simpul Jaringan Terbaik</div><div class="award-year">Bhumandala Awards 2022</div></div></div>
+      <div class="award-card"><div class="award-icon">🏆</div><div><div class="award-title">Best Innovation – Gold Trophy, West Java</div><div class="award-year">Bhumandala Innovation Awards 2021</div></div></div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- CERTS -->
 <section>
@@ -515,8 +824,8 @@
 </section>
 
 <!-- CONTACT -->
-<section id="contact" style="background: var(--bg2); max-width: 100%; padding: 72px 0;">
-  <div style="max-width: 1000px; margin: 0 auto; padding: 0 32px;">
+<div class="full-width-section" style="background: var(--bg2);" id="contact">
+  <div class="inner">
     <p class="section-eyebrow">Let's connect</p>
     <h2 class="section-title">Contact</h2>
     <div class="contact-grid">
@@ -524,11 +833,6 @@
         <div class="contact-icon">✉️</div>
         <div class="contact-label">Email</div>
         <div class="contact-val">raihanjauhari@gmail.com</div>
-      </a>
-      <a href="https://wa.me/6281222877269" class="contact-card" target="_blank" rel="noopener">
-        <div class="contact-icon">📱</div>
-        <div class="contact-label">WhatsApp</div>
-        <div class="contact-val">+62 812-2287-7269</div>
       </a>
       <a href="https://www.linkedin.com/in/raihan-jauhari-pratama-a4a8b51a5/" class="contact-card" target="_blank" rel="noopener">
         <div class="contact-icon">💼</div>
@@ -540,13 +844,18 @@
         <div class="contact-label">Location</div>
         <div class="contact-val">Jakarta, Indonesia</div>
       </div>
+      <div class="contact-card" style="cursor:default">
+        <div class="contact-icon">🎓</div>
+        <div class="contact-label">Education</div>
+        <div class="contact-val">ITB – Oceanography, 2021</div>
+      </div>
     </div>
     <div class="cta-block">
       <p>Open to full-time roles, project-based consultancy, and collaborations in offshore geospatial systems, marine spatial data integration, and metocean-driven engineering.</p>
-      <a href="mailto:raihanjauhari@gmail.com" class="btn-primary">Send an email</a>
+      <a href="mailto:raihanjauhari@gmail.com" class="btn-primary">Send an email ↗</a>
     </div>
   </div>
-</section>
+</div>
 
 <footer>
   <p>Raihan Jauhari Pratama, S.Si. · Oceanographic &amp; Offshore Geospatial Engineer · Jakarta, Indonesia</p>
@@ -554,43 +863,115 @@
 </footer>
 
 <script>
-  function toggleDark(){
-    const isDark=document.documentElement.getAttribute('data-theme')==='dark';
-    document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
-    document.getElementById('darkBtn').textContent=isDark?'🌙':'☀️';
-  }
+/* ── DARK MODE ── */
+function toggleDark(){
+  const d=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',d?'light':'dark');
+  document.getElementById('darkBtn').textContent=d?'🌙':'☀️';
+  if(window._map) window._map.invalidateSize();
+}
 
-  function filterProj(cat,btn){
-    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    document.querySelectorAll('.proj-card').forEach(c=>{
-      c.style.display=(cat==='all'||c.dataset.cat===cat)?'':'none';
+/* ── PROJECT FILTER ── */
+function filterProj(cat,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.proj-card').forEach(c=>{
+    c.style.display=(cat==='all'||c.dataset.cat.split(' ').includes(cat))?'':'none';
+  });
+}
+
+/* ── LIGHTBOX ── */
+let lbImgs=[], lbIdx=0;
+function openLightbox(card){
+  const overlay=document.getElementById('lightbox');
+  document.getElementById('lbTitle').textContent=card.dataset.title;
+  document.getElementById('lbClient').textContent=card.dataset.client;
+  lbImgs=(card.dataset.imgs||'').split(',').filter(Boolean);
+  lbIdx=0;
+  renderLbThumbs();
+  showLbImg(0);
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow='';
+}
+function closeLightboxOutside(e){
+  if(e.target===document.getElementById('lightbox')) closeLightbox();
+}
+function renderLbThumbs(){
+  const wrap=document.getElementById('lbThumbs');
+  wrap.innerHTML='';
+  lbImgs.forEach((src,i)=>{
+    const t=document.createElement('div');
+    t.className='lightbox-thumb'+(i===0?' active':'');
+    t.onclick=()=>showLbImg(i);
+    const img=document.createElement('img');
+    img.src=src; img.alt='thumb '+i;
+    t.appendChild(img); wrap.appendChild(t);
+  });
+}
+function showLbImg(i){
+  lbIdx=i;
+  const mainImg=document.getElementById('lbMainImg');
+  const placeholder=document.getElementById('lbPlaceholder');
+  document.querySelectorAll('.lightbox-thumb').forEach((t,j)=>t.classList.toggle('active',j===i));
+  if(!lbImgs[i]){ mainImg.style.display='none'; placeholder.style.display='block'; return; }
+  mainImg.style.display='none'; placeholder.style.display='none';
+  mainImg.onload=()=>{ mainImg.style.display='block'; };
+  mainImg.onerror=()=>{ mainImg.style.display='none'; placeholder.style.display='block'; };
+  mainImg.src=lbImgs[i];
+}
+function lbNav(dir){
+  const next=(lbIdx+dir+lbImgs.length)%lbImgs.length;
+  showLbImg(next);
+}
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeLightbox(); });
+
+/* ── TIMELINE TABS ── */
+function switchTab(id,btn){
+  document.querySelectorAll('.tl-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.timeline-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-'+id).classList.add('active');
+}
+
+
+</script>
+
+<!-- Leaflet JS at bottom ensures it is fully parsed before initMap() runs -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+function initMap(){
+  var mapEl=document.getElementById('map');
+  if(!mapEl||mapEl._leaflet_id) return;
+  var map=L.map('map',{center:[-2.5,118],zoom:5,scrollWheelZoom:false});
+  window._map=map;
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    maxZoom:18
+  }).addTo(map);
+  var projects=[
+    {lat:-8.98,lng:126.05,color:'#1D9E75',label:'M',title:'Natarbora, Timor Leste',desc:'Metocean Study · Mar 2026<br><i>TAKA Hydrocore Indonesia</i>'},
+    {lat:3.90,lng:108.20,color:'#1D9E75',label:'M',title:'South Numbing Island, Kepulauan Riau',desc:'Metocean Study · Feb 2026<br><i>TAKA Hydrocore Indonesia</i>'},
+    {lat:0.50,lng:117.50,color:'#185FA5',label:'S',title:'Kutei, Kalimantan',desc:'Positioning Surveyor · Dec 2025–Jan 2026<br><i>ENI / Fugro</i>'},
+    {lat:-7.98,lng:131.30,color:'#1D9E75',label:'M',title:'Saumlaki, Maluku',desc:'Metocean Study · Dec 2025<br><i>TAKA Hydrocore & INPEX Masela</i>'},
+    {lat:-6.80,lng:108.50,color:'#185FA5',label:'G',title:'Indonesian Cable Route',desc:'GIS Specialist · Oct 2025–Feb 2026<br><i>Keppel</i>'},
+    {lat:-8.70,lng:118.30,color:'#1D9E75',label:'M',title:"Hu'u, NTB",desc:"Metocean Study · Sep 2025<br><i>TAKA Hydrocore Indonesia</i>"},
+    {lat:-5.50,lng:105.40,color:'#BA7517',label:'S',title:'Jetty Baru, Nearshore',desc:'Party Chief Surveyor · May–Jun 2025<br><i>Medco Power</i>'},
+    {lat:-8.20,lng:130.80,color:'#D85A30',label:'D',title:'INPEX Masela, Maluku',desc:'Drone Data Processor · Nov–Dec 2024<br><i>INPEX Masela</i>'}
+  ];
+  projects.forEach(function(p){
+    var icon=L.divIcon({
+      html:'<div style="width:30px;height:30px;border-radius:50%;background:'+p.color+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700;border:2.5px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,0.35)">'+p.label+'</div>',
+      className:'',iconSize:[30,30],iconAnchor:[15,15],popupAnchor:[0,-16]
     });
-  }
-
-  function showMapTip(e,el){
-    const tip=document.getElementById('mapTip');
-    const parts=el.getAttribute('data-tip').split('|');
-    tip.innerHTML='<strong>'+parts[0]+'</strong><span>'+parts[1]+'<br>'+parts[2]+'</span>';
-    const rect=document.querySelector('.map-wrap').getBoundingClientRect();
-    let x=e.clientX-rect.left+12, y=e.clientY-rect.top-10;
-    if(x+190>rect.width) x-=200;
-    tip.style.left=x+'px'; tip.style.top=y+'px'; tip.style.opacity='1';
-    setTimeout(()=>tip.style.opacity='0',3000);
-  }
-
-  const observer=new IntersectionObserver((entries)=>{
-    entries.forEach(en=>{
-      if(en.isIntersecting){
-        en.target.querySelectorAll('.skill-fill').forEach(bar=>{
-          bar.style.width=bar.dataset.w*100+'%';
-          bar.classList.add('animated');
-        });
-      }
-    });
-  },{threshold:0.2});
-  const skillsSection=document.getElementById('skillsContainer');
-  if(skillsSection) observer.observe(skillsSection);
+    L.marker([p.lat,p.lng],{icon}).addTo(map)
+      .bindPopup('<strong style="font-size:13px">'+p.title+'</strong><br><span style="font-size:12px;color:#52635f;line-height:1.6">'+p.desc+'</span>',{maxWidth:230});
+  });
+}
+initMap();
 </script>
 </body>
 </html>
